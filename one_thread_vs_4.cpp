@@ -25,9 +25,9 @@ int main() {
 
     std::clock_t st = std::clock();
     
-    std::thread t(sumVector, vec, 0, 10000000);
-    t.join();
-
+    int sum = sumVector(vec, 0, 10000000);
+    std::cout << sum << "\n";
+    
     std::cout << "One thread: " << (double)(std::clock() - st) / CLOCKS_PER_SEC << "\nFour threads: ";
     
     st = std::clock();
@@ -41,6 +41,9 @@ int main() {
     t2.join();
     t3.join();
     t4.join();
+    
+    sum = s1 + s2 + s3 + s4;
+    std::cout << sum << "\n";
 
     std::cout << (double)(std::clock() - st) / CLOCKS_PER_SEC;
 }
