@@ -33,13 +33,13 @@ public:
     Station(std::string name, Station* prev, Station* next, double timeToPrev, double timeToNext) : name(name), prev(prev), next(next), timeToNext(timeToNext), timeToPrev(timeToPrev) {}
 };
 
-void train(Station* s, int side=1) {
+void train(Station* s, int side=1, int id=1) {
     /// side=1 - в сторону от Душанбе
     /// side=0 - в обратную сторону
 
     s->mutex.lock();
 
-    std::cout << std::format("{0} - Train {2} at {1} station.\n", s->name, currentTime(), std::this_thread::get_id());
+    std::cout << std::format("{0} - Train {2} at {1} station.\n", s->name, currentTime(), id);
 
 side1:    if (side==1) {
         if (s->next == nullptr) {
@@ -48,7 +48,7 @@ side1:    if (side==1) {
             std::this_thread::sleep_for(std::chrono::milliseconds((int)(s->timeToNext * 1000)));
             
             s->mutex.unlock();
-            train(s->next, side);
+            train(s->next, side, id);
             return;
         }
     }
@@ -61,7 +61,7 @@ side1:    if (side==1) {
             std::this_thread::sleep_for(std::chrono::milliseconds((int)(s->timeToPrev * 1000)));
             
             s->mutex.unlock();
-            train(s->prev, side);
+            train(s->prev, side, id);
             return;
         }
     }
@@ -120,14 +120,14 @@ int main() {
     olim.next = &kurbon;
     kurbon.next = &kulab;
 
-    std::thread t1(train, &dush1, 1);
-    std::thread t2(train, &kulab, 0);
-    std::thread t3(train, &vahdat, 1);
-    std::thread t4(train, &olim, 0);
-    std::thread t5(train, &yavan, 1);
-    std::thread t6(train, &dangara, 0);
-    std::thread t7(train, &kurgan, 1);
-    std::thread t8(train, &sangt, 0);
+    std::thread t1(train, &dush1, 1, 1);
+    std::thread t2(train, &kulab, 0, 2);
+    std::thread t3(train, &vahdat, 1, 3);
+    std::thread t4(train, &olim, 0, 4);
+    std::thread t5(train, &yavan, 1, 5);
+    std::thread t6(train, &dangara, 0, 6);
+    std::thread t7(train, &kurgan, 1, 7);
+    std::thread t8(train, &sangt, 0, 8);
 
     t1.join();
     t2.join();
