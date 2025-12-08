@@ -39,7 +39,7 @@ void train(Station* s, int side=1, int id=1) {
 
     s->mutex.lock();
 
-    std::cout << std::format("{0} - Train {2} at {1} station.\n", s->name, currentTime(), id);
+    std::cout << std::format("{1} - Train {2} at {0} station.\n", s->name, currentTime(), id);
 
 side1:    if (side==1) {
         if (s->next == nullptr) {
